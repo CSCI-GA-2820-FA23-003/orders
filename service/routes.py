@@ -29,3 +29,22 @@ def index():
 ######################################################################
 
 # Place your REST API code here ...
+
+@app.route("/orders", methods=["POST"])
+def create_order():
+    data = request.get_json()
+
+    # Check if the required fields are present in the JSON data
+    required_fields = ["name", "address", "cost_amount","create_time",
+  "status","items"]
+
+    for field in required_fields:
+        if field not in data:
+            return jsonify({"error": f"Missing required field: {field}"}), status.HTTP_400_BAD_REQUEST
+
+    # Create a new order
+    order = Order()
+    order.deserialize(data)
+    order.create()
+
+    return jsonify(order.serialize()), status.HTTP_201_CREATED
