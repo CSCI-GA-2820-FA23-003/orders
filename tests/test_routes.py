@@ -131,22 +131,6 @@ class TestOrderService(TestCase):
         # print(data)
         self.assertEqual(data["id"], orders[1].id, "Id does not match")
 
-    def test_read_an_order(self):
-        orders = self._create_orders(3)
-        resp = self.client.get(f"orders/{orders[0].id}")
-        self.assertEqual(resp.status_code, status.HTTP_200_OK)
-        data = resp.get_json()
-        self.assertEqual(data["id"], orders[0].id, "Id does not match")
-        non_existent_order_id = -1  # An order ID that does not exist
-
-        response = self.client.get(f"/orders/{non_existent_order_id}")
-
-        self.assertEqual(
-            response.status_code,
-            status.HTTP_404_NOT_FOUND,
-            f"Order with id '{non_existent_order_id}' was not found.",
-        )
-
     def test_get_order_with_invalid_id(self):
         """It should Return 404 with invalid order ID"""
         resp = self.client.get(BASE_URL, query_string="foo")
@@ -347,18 +331,6 @@ class TestOrderService(TestCase):
         # Verify that items are listed only if the order exists
         self.assertEqual(len(data["items"]), 3)
 
-        non_exist_order_id = 999
-        resp = self.client.get(
-            f"/orders/{non_exist_order_id}/items",
-            content_type="application/json",
-        )
-
-        self.assertEqual(
-            resp.status_code,
-            status.HTTP_404_NOT_FOUND,
-            f"Order with id '{non_exist_order_id}' was not found.",
-        )
-
     def test_list_one_item_in_one_order(self):
         """It should list one item in one order."""
         # Create an order with items
@@ -436,11 +408,7 @@ class TestOrderService(TestCase):
         order_id = new_order["id"]
 
         # Update the order.
-        updated_data = {
-            "name": "Updated Name",
-            "address": "Updated Address",
-            "status": "DELIVERED",
-        }
+        updated_data = {"name": "Updated Name", "address": "Updated Address"}
         resp = self.client.put(
             f"{BASE_URL}/{order_id}",
             json=updated_data,
@@ -454,7 +422,6 @@ class TestOrderService(TestCase):
         self.assertEqual(
             updated_order["address"], "Updated Address", "Addresses do not match."
         )
-        self.assertEqual(updated_order["status"], "DELIVERED", "Status do not match.")
 
         # Choose an order ID that does not exist in your database.
         nonexistent_order_id = 9999  # Replace with an ID that doesn't exist.

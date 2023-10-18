@@ -91,19 +91,6 @@ def list_orders():
     return make_response(jsonify(results), status.HTTP_200_OK)
 
 
-@app.route("/orders/<order_id>", methods=["GET"])
-def read_an_order(order_id):
-    """Find an order by ID or Returns all of the Orders"""
-    app.logger.info("Request for Read an Order")
-    order = Order.find(order_id)
-
-    if order is not None:
-        results = order.serialize()
-        return make_response(jsonify(results), status.HTTP_200_OK)
-    else:
-        abort(status.HTTP_404_NOT_FOUND, f"Order with id '{order_id}' was not found.")
-
-
 ######################################################################
 # CREATE A NEW ORDER
 ######################################################################
@@ -214,7 +201,7 @@ def update_item_by_id_to_order(order_id, item_id):
     )
 
     return make_response(
-        jsonify(item=item.serialize(), order=order.serialize()),
+        jsonify(order=order.serialize(), item=item.serialize()),
         status.HTTP_202_ACCEPTED,
         {"Location": location_url},
     )
@@ -228,16 +215,12 @@ def list_items_in_one_order(order_id):
     app.logger.info("Request for Item list in one order")
     # order_id = request.args.get("order_id")
     order = Order.find(order_id)
-    if order is not None:
-        order = order.serialize()
-        results = order["items"]
-        # Process the query string if any
-
-        return make_response(
-            jsonify(order_id=int(order_id), items=results), status.HTTP_200_OK
-        )
-    else:
-        abort(status.HTTP_404_NOT_FOUND, f"Order with id '{order_id}' was not found.")
+    order = order.serialize()
+    results = order["items"]
+    # Process the query string if any
+    return make_response(
+        jsonify(order_id=int(order_id), items=results), status.HTTP_200_OK
+    )
 
 
 ######################################################################
@@ -306,8 +289,6 @@ def update_an_order(order_id):
         order.name = data["name"]
     if "address" in data:
         order.address = data["address"]
-    if "status" in data:
-        order.status = data["status"]
 
     order.update()
 
