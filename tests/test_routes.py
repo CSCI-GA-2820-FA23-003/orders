@@ -131,6 +131,20 @@ class TestOrderService(TestCase):
         # print(data)
         self.assertEqual(data["id"], orders[1].id, "Id does not match")
 
+    def test_get_order_with_invalid_id(self):
+        """It should Return 404 with invalid order ID"""
+        resp = self.client.get(BASE_URL, query_string="foo")
+        # print(orders[1].id)
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_content_type(self):
+        """It should return error with invalid payload type"""
+        order = OrderFactory()
+        logging.debug("Test order: %s", order.serialize())
+        resp = self.client.post(BASE_URL, data=b"abc")
+        # self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(resp.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
+
     def test_create_order(self):
         """It should Create a new Order"""
         order = OrderFactory()

@@ -139,14 +139,14 @@ class Item(db.Model):
         return cls.query.get(by_id)
 
     @classmethod
-    def find_by_name(cls, name):
-        """Returns all Items with the given name
+    def find_by_title(cls, title):
+        """Returns all Items with the given title
 
         Args:
-            name (string): the name of the Items you want to match
+            title (string): the title of the Items you want to match
         """
-        logger.info("Processing name query for %s ...", name)
-        return cls.query.filter(cls.name == name)
+        logger.info("Processing name query for %s ...", title)
+        return cls.query.filter(cls.title == title)
 
 
 class Order(db.Model):

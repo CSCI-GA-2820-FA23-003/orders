@@ -86,7 +86,7 @@ def list_orders():
         results = order.serialize()
 
     else:
-        return make_response(jsonify(None), status.HTTP_404_NOT_FOUND)
+        abort(status.HTTP_404_NOT_FOUND)
 
     return make_response(jsonify(results), status.HTTP_200_OK)
 
