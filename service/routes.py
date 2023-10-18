@@ -92,6 +92,37 @@ def list_orders():
 
 
 ######################################################################
+# FIND AN ORDER LIST BY CUSTOMER_ID OR RETURN ALL ORDERS
+######################################################################
+@app.route("/orders-by-customer-id", methods=["GET"])
+def list_orders_by_customer_id():
+    """Find an order list by customer_ID or Returns all of the Orders"""
+    app.logger.info("Request for Order list")
+    orders = []
+
+    # print("request.args = {}".format(request.args.to_dict(flat=False)))
+
+    # Process the query string if any
+
+    if len(request.args) == 0:  # This corresponds to "/orders"
+        orders = Order.all()
+
+        # Return as an array of dictionaries
+        results = [order.serialize() for order in orders]
+
+    elif "customer_id" in request.args:
+        customer_id = request.args.get("customer_id")
+        orders = Order.find_by_customer_id(customer_id)
+        # results = order.serialize()
+        results = [order.serialize() for order in orders]
+
+    else:
+        return make_response(jsonify(None), status.HTTP_404_NOT_FOUND)
+
+    return make_response(jsonify(results), status.HTTP_200_OK)
+
+
+######################################################################
 # CREATE A NEW ORDER
 ######################################################################
 @app.route("/orders", methods=["POST"])

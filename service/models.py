@@ -166,6 +166,7 @@ class Order(db.Model):
         db.Enum(OrderStatus), nullable=False, server_default=(OrderStatus.NEW.name)
     )
     items = db.relationship("Item", backref="order", lazy=True, passive_deletes=True)
+    customer_id = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
         return f"<Order {self.name} id=[{self.id}]>"
@@ -202,6 +203,7 @@ class Order(db.Model):
             "cost_amount": self.cost_amount,
             "status": self.status.name,
             "items": [],
+            "customer_id": self.customer_id,
         }
 
         for item in self.items:
@@ -223,6 +225,7 @@ class Order(db.Model):
             self.cost_amount = data["cost_amount"]
             self.status = getattr(OrderStatus, data["status"])
             item_list = data["items"]
+            self.customer_id = data["customer_id"]
 
             for json_item in item_list:
                 item = Item()
@@ -271,3 +274,13 @@ class Order(db.Model):
         """
         logger.info("Processing name query for %s ...", name)
         return cls.query.filter(cls.name == name)
+
+    @classmethod
+    def find_by_customer_id(cls, customer_id):
+        """Returns all orders with the given customer_id
+
+        Args:
+            customer_id (int): The customer_id to filter orders
+        """
+        logger.info("Processing customer_id query for %s ...", customer_id)
+        return cls.query.filter(cls.customer_id == customer_id).all()

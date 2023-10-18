@@ -155,6 +155,15 @@ class TestOrder(unittest.TestCase):
         self.assertEqual(same_order.id, order.id)
         self.assertEqual(same_order.name, order.name)
 
+    def test_find_by_customer_id(self):
+        order = OrderFactory()
+        order.create()
+
+        # Fetch it back by name
+        same_order = Order.find_by_customer_id(order.customer_id)[0]
+        self.assertEqual(same_order.id, order.id)
+        self.assertEqual(same_order.customer_id, order.customer_id)
+
     def test_serialize_an_order(self):
         """It should Serialize an order"""
         order = OrderFactory()
