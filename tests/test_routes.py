@@ -501,3 +501,36 @@ class TestOrderService(TestCase):
 
         # Verify that the response is a 404 error.
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_list_orders_by_status_valid_status(self):
+        """Test listing orders by a valid status."""
+        # Create an order with the specified status
+        approved_order = OrderFactory(status=OrderStatus.APPROVED)
+        db.session.add(approved_order)
+        db.session.commit()
+
+        # Set up a valid status for the test
+        status_param = "APPROVED"
+
+        # Send a GET request to filter orders by status
+        resp = self.client.get(f"/orders/orders_by_status?status={status_param}")
+
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        print("Received data:", data)
+
+        # Ensure that there is at least one order with the specified status
+        self.assertGreater(len(data), 0)
+
+    def test_list_orders_by_status_no_status_parameter(self):
+        """Test listing all orders when no status parameter is provided."""
+        # Create some orders for testing
+        orders = self._create_orders(3)
+
+        # Send a GET request without a status parameter
+        resp = self.client.get("/orders/orders_by_status")
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+
+        # Ensure that the length of the data matches the number of orders created
+        self.assertEqual(len(data), len(orders))

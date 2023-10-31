@@ -62,11 +62,11 @@ def check_content_type(media_type):
 #  R E S T   A P I   E N D P O I N T S
 ######################################################################
 ######################################################################
-# FIND AN ORDER BY ID OR RETURN ALL ORDERS
+# FIND AN ORDER BY ID/status  OR RETURN ALL ORDERS
 ######################################################################
 @app.route("/orders", methods=["GET"])
 def list_orders():
-    """Find an order by ID or Returns all of the Orders"""
+    """Find an order by ID or Returns all of the Orders or filter by status"""
     app.logger.info("Request for Order list")
     orders = []
 
@@ -102,6 +102,21 @@ def read_an_order(order_id):
         return make_response(jsonify(results), status.HTTP_200_OK)
     else:
         abort(status.HTTP_404_NOT_FOUND, f"Order with id '{order_id}' was not found.")
+
+
+@app.route("/orders/orders_by_status", methods=["GET"])
+def list_orders_by_status():
+    status_param = request.args.get("status")
+
+    if status_param:
+        # Filter orders by the specified status
+        orders = Order.query.filter_by(status=status_param).all()
+    else:
+        # If no status is specified, return all orders
+        orders = Order.query.all()
+
+    results = [order.serialize() for order in orders]
+    return jsonify(results), 200
 
 
 ######################################################################
