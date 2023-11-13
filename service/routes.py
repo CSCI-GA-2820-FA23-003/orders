@@ -8,6 +8,8 @@ from service.common import status  # HTTP Status Codes
 from service.models import Order, Item
 from datetime import datetime, timezone, timedelta
 
+# from operator import itemgetter
+
 # Import Flask application
 from . import app
 
@@ -285,3 +287,17 @@ def delete_an_order(order_id):
         status.HTTP_204_NO_CONTENT,
         {"Deleted_order_id": order_id},
     )
+
+
+def test_sort_orders(self):
+    """It should sort orders by amount"""
+    orders = self.create_orders(3)
+    resp = self.client.get("/orders/sort?sort_by=amount")
+    self.assertEqual(resp.status_code, status.HTTP_200_OK)
+    data = resp.get_json()
+    self.assertEqual(len(data), 3)
+
+    # Verify that orders are sorted by amount in descending order
+    sorted_orders = sorted(orders, key=lambda x: x.cost_amount, reverse=True)
+    for i, order in enumerate(sorted_orders):
+        self.assertEqual(data[i]["id"], order.id)
