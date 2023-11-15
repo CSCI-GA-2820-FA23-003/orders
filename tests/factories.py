@@ -31,6 +31,7 @@ class OrderFactory(factory.Factory):
         model = Order
 
     id = factory.Sequence(lambda n: n)
+    # Add user_id
     name = factory.Faker("name")
     create_time = FuzzyDateTime(datetime(2008, 1, 1, tzinfo=UTC))
     address = factory.Faker("address")
@@ -45,6 +46,7 @@ class OrderFactory(factory.Factory):
             OrderStatus.CANCELED,
         ]
     )
+
     # the many side of relationships can be a little wonky in factory boy:
     # https://factoryboy.readthedocs.io/en/latest/recipes.html#simple-many-to-many-relationship
 

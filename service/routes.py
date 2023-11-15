@@ -228,7 +228,9 @@ def list_one_item_in_one_order(order_id, item_id):
     return make_response(
         jsonify(error="Item not in Order"), status.HTTP_400_BAD_REQUEST
     )
-    # Process the query string if any
+
+
+# Process the query string if any
 
 
 ######################################################################
@@ -289,15 +291,29 @@ def delete_an_order(order_id):
     )
 
 
-def test_sort_orders(self):
-    """It should sort orders by amount"""
-    orders = self.create_orders(3)
-    resp = self.client.get("/orders/sort?sort_by=amount")
-    self.assertEqual(resp.status_code, status.HTTP_200_OK)
-    data = resp.get_json()
-    self.assertEqual(len(data), 3)
+######################################################################
+# SORT ORDERS
+######################################################################
+@app.route("/orders/sort", methods=["GET"])
+def sort_orders():
+    """Sort orders by amount"""
+    app.logger.info("Sorting orders")
 
-    # Verify that orders are sorted by amount in descending order
-    sorted_orders = sorted(orders, key=lambda x: x.cost_amount, reverse=True)
-    for i, order in enumerate(sorted_orders):
-        self.assertEqual(data[i]["id"], order.id)
+    # Get the sort_by parameter from the request
+    sort_by = request.args.get("sort_by")
+
+    # Validate sort_by parameter
+    if sort_by not in ["amount"]:
+        return make_response(
+            jsonify(error="Invalid sort_by parameter"), status.HTTP_400_BAD_REQUEST
+        )
+
+    orders = Order.all()
+
+    if sort_by == "amount":
+        orders.sort(key=lambda x: x.cost_amount, reverse=True)
+
+    # Return the sorted orders as an array of dictionaries
+    results = [order.serialize() for order in orders]
+
+    return make_response(jsonify(results), status.HTTP_200_OK)

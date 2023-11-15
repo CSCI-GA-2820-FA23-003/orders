@@ -423,18 +423,17 @@ class TestOrderService(TestCase):
         # Verify that the response is a 404 error.
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
-    @app.route("/orders/sort", methods=["GET"])
-    def sort_orders():
-        """Sort orders by amount"""
-        sort_by = request.args.get("sort_by")
-
-        if sort_by not in ["amount"]:
-            abort(status.HTTP_400_BAD_REQUEST, "Invalid sort_by parameter")
-
-        orders = Order.all()
-
-        if sort_by == "amount":
-            orders.sort(key=lambda x: x.cost_amount, reverse=True)
-
-        results = [order.serialize() for order in orders]
-        return make_response(jsonify(results), status.HTTP_200_OK)
+    def test_sort_orders_by_amount(self):
+        """It should sort orders by amount in descending order"""
+        orders = self._create_orders(5)
+        resp = self.client.get("/orders/sort?sort_by=amount")
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(len(data), 5)
+        # Check if orders are sorted by amount in descending order
+        self.assertTrue(
+            all(
+                data[i]["cost_amount"] >= data[i + 1]["cost_amount"]
+                for i in range(len(data) - 1)
+            )
+        )
