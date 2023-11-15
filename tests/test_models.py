@@ -9,6 +9,7 @@ from datetime import datetime
 from service import app
 from service.models import Order, Item, DataValidationError, db
 from tests.factories import OrderFactory, ItemFactory
+from datetime import datetime
 
 DATABASE_URI = os.getenv(
     "DATABASE_URI", "postgresql://postgres:postgres@localhost:5432/postgres"
@@ -303,3 +304,81 @@ class TestOrder(unittest.TestCase):
         # Fetch it back again
         order = Order.find(order.id)
         self.assertEqual(len(order.items), 0)
+
+    """ def test_find_by_date_range_orders_within_range(self):
+       
+        # Create orders with create_time within the specified date range
+        order1 = OrderFactory(create_time=datetime(2023, 1, 1))
+        order2 = OrderFactory(create_time=datetime(2023, 1, 15))
+        order3 = OrderFactory(create_time=datetime(2023, 1, 30))
+
+        # Create an order outside the date range
+        OrderFactory(create_time=datetime(2022, 12, 31))
+
+        # Commit orders to the database
+        db.session.commit()
+
+        # Make a request to the find_by_date_range method
+        orders_within_range = Order.find_by_date_range(
+            datetime(2023, 1, 1), datetime(2023, 1, 31)
+        )
+
+        # Check that the correct orders are returned
+        self.assertIn(order1, orders_within_range)
+        self.assertIn(order2, orders_within_range)
+        self.assertIn(order3, orders_within_range)
+    """
+
+    """
+    def test_find_by_date_range_orders_on_start_date(self):
+    
+        # Create an order with create_time on the start date
+        order = OrderFactory(create_time=datetime(2023, 1, 1))
+
+        # Create an order outside the date range
+        OrderFactory(create_time=datetime(2022, 12, 31))
+
+        # Commit orders to the database
+        db.session.commit()
+
+        # Make a request to the find_by_date_range method
+        orders_on_start_date = Order.find_by_date_range(
+            datetime(2023, 1, 1), datetime(2023, 1, 31)
+        )
+    
+        # Check that the correct order is returned
+        self.assertIn(order, orders_on_start_date)
+
+    def test_find_by_date_range_orders_on_end_date(self):
+        # Create an order with create_time on the end date
+        order = OrderFactory(create_time=datetime(2023, 1, 31))
+
+        # Create an order outside the date range
+        OrderFactory(create_time=datetime(2023, 2, 1))
+
+        # Commit orders to the database
+        db.session.commit()
+
+        # Make a request to the find_by_date_range method
+        orders_on_end_date = Order.find_by_date_range(
+            datetime(2023, 1, 1), datetime(2023, 1, 31)
+        )
+
+        # Check that the correct order is returned
+        self.assertIn(order, orders_on_end_date)
+
+    def test_find_by_date_range_orders_outside_range(self):
+        # Create an order outside the date range
+        OrderFactory(create_time=datetime(2022, 12, 31))
+
+        # Commit orders to the database
+        db.session.commit()
+
+        # Make a request to the find_by_date_range method
+        orders_outside_range = Order.find_by_date_range(
+            datetime(2023, 1, 1), datetime(2023, 1, 31)
+        )
+
+        # Check that no orders are returned
+        self.assertEqual(len(orders_outside_range), 0)
+        """

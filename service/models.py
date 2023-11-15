@@ -7,7 +7,7 @@ import logging
 from datetime import datetime
 from enum import Enum
 from flask_sqlalchemy import SQLAlchemy
-import datetime
+from datetime import datetime
 
 
 logger = logging.getLogger("flask.app")
@@ -285,3 +285,7 @@ class Order(db.Model):
     @classmethod
     def find_by_user_id(cls, user_id):
         return cls.query.filter(cls.user_id == user_id)
+
+    @classmethod
+    def find_by_date_range(cls, start_date, end_date):
+        return cls.query.filter(cls.create_time.between(start_date, end_date)).all()

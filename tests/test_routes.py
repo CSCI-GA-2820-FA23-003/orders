@@ -548,3 +548,75 @@ class TestOrderService(TestCase):
 
         # Verify that the response is a 404 error.
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_list_orders_by_date_range_valid_date_range(self):
+        """It should return orders within the specified valid date range"""
+        # Create orders with create_time within the specified date range
+        order1 = OrderFactory(create_time=datetime(2023, 1, 1))
+        order2 = OrderFactory(create_time=datetime(2023, 1, 15))
+        order3 = OrderFactory(create_time=datetime(2023, 1, 30))
+
+        # Commit orders to the database
+        db.session.commit()
+
+        # Make a request to the list_orders_by_date_range route
+        response = self.client.get(
+            "/orders/by_date_range?start_date=2023-01-01&end_date=2023-01-31"
+        )
+
+        # Check that the response is successful (status code 200)
+        self.assertEqual(response.status_code, 200)
+
+        # Check that the correct orders are returned in the response
+        self.assertIn(order1.serialize(), response.json)
+        self.assertIn(order2.serialize(), response.json)
+        self.assertIn(order3.serialize(), response.json)
+
+    def test_list_orders_by_date_range_invalid_date_format(self):
+        "It should return a 400 Bad Request for an invalid date format"
+        # Make a request to the list_orders_by_date_range route with an invalid date format
+        response = self.client.get(
+            "/orders/by_date_range?start_date=2023-01-01&end_date=invalid"
+        )
+        # Check that the response has a 400 status code
+        self.assertEqual(response.status_code, 400)
+
+        # Check that the response contains the expected error message
+        self.assertEqual(response.json["error"], "Invalid date format. Use YYYY-MM-DD.")
+
+    def test_list_orders_by_date_range_missing_start_date(self):
+        """It should return a 400 Bad Request for a missing start_date parameter"""
+        # Make a request to the list_orders_by_date_range route without providing start_date
+        response = self.client.get("/orders/by_date_range?end_date=2023-01-31")
+
+        # Check that the response has a 400 status code
+        self.assertEqual(response.status_code, 400)
+
+        # Check that the response contains the expected error message
+        self.assertEqual(response.json["error"], "Missing start_date parameter.")
+
+    def test_list_orders_by_date_range_missing_end_date(self):
+        """It should return a 400 Bad Request for a missing end_date parameter"""
+        # Make a request to the list_orders_by_date_range route without providing end_date
+        response = self.client.get("/orders/by_date_range?start_date=2023-01-01")
+
+        # Check that the response has a 400 status code
+        self.assertEqual(response.status_code, 400)
+
+        # Check that the response contains the expected error message
+        self.assertEqual(response.json["error"], "Missing end_date parameter.")
+
+    def test_list_orders_by_date_range_end_date_before_start_date(self):
+        """It should return a 400 Bad Request for end_date before start_date"""
+        # Make a request to the list_orders_by_date_range route with end_date before start_date
+        response = self.client.get(
+            "/orders/by_date_range?start_date=2023-01-31&end_date=2023-01-01"
+        )
+
+        # Check that the response has a 400 status code
+        self.assertEqual(response.status_code, 400)
+
+        # Check that the response contains the expected error message
+        self.assertEqual(
+            response.json["error"], "end_date must be equal to or after start_date."
+        )

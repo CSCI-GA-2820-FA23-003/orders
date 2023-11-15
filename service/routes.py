@@ -359,3 +359,25 @@ def delete_an_order(order_id):
         status.HTTP_204_NO_CONTENT,
         {"Deleted_order_id": order_id},
     )
+
+
+@app.route("/orders/by_date_range", methods=["GET"])
+def list_orders_by_date_range():
+    print("helooooooooo")
+    """Find orders within a date range"""
+    app.logger.info("Request for orders within a date range")
+
+    start_date_str = request.args.get("start_date")
+    end_date_str = request.args.get("end_date")
+    try:
+        start_date = datetime.strptime(start_date_str, "%Y-%m-%d")
+        end_date = datetime.strptime(end_date_str, "%Y-%m-%d")
+    except ValueError as e:
+        return make_response(
+            jsonify(error="Invalid date format. Use YYYY-MM-DD."),
+            status.HTTP_400_BAD_REQUEST,
+        )
+    orders = Order.find_by_date_range(start_date, end_date)
+    results = [order.serialize() for order in orders]
+
+    return make_response(jsonify(results), status.HTTP_200_OK)
