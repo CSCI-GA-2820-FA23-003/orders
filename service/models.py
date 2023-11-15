@@ -10,7 +10,6 @@ from flask_sqlalchemy import SQLAlchemy
 import datetime
 
 
-
 logger = logging.getLogger("flask.app")
 
 # Create the SQLAlchemy object to be initialized later in init_db()
