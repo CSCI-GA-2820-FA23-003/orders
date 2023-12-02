@@ -117,6 +117,8 @@ class Item(db.Model):
             self.price = data["price"]
             self.product_id = data["product_id"]
             self.status = getattr(ItemStatus, data["status"])
+            self.user_id = data["user_id"]
+
         except KeyError as error:
             raise DataValidationError(
                 "Invalid Item: missing " + error.args[0]
