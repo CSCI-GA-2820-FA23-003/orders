@@ -364,5 +364,10 @@ def cancel_an_order(order_id):
     else:
         order.status = "CANCELED"
 
-    order.update()
-    return make_response(jsonify(order.serialize()), status.HTTP_200_OK)
+    order.delete()
+
+    return make_response(
+        "",
+        status.HTTP_204_NO_CONTENT,
+        {"Deleted_order_id": order_id},
+    )
