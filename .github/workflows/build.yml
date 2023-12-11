@@ -2,7 +2,8 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ master ]
+    # branches: [ master ]
+    branches: [ test-cd-pipeline ]
 
 jobs:
   build:
@@ -31,3 +32,9 @@ jobs:
     - name: Update image tag in deployment manifest
       run: |
         sed -i 's|image: tw2883/orders:.*|image: tw2883/orders:'${{ steps.docker_build.outputs.digest }}'|' ./k8s/deployment.yaml
+    - name: Commit changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git commit -am "Update image tag in deployment manifest"
+        git push
