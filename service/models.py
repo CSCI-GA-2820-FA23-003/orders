@@ -41,7 +41,7 @@ class ItemStatus(Enum):
 
     INSTOCK = 0
     LOWSTOCK = 1
-    OUTOFSTOCK = 2
+    NOSTOCK = 2
 
 
 class Item(db.Model):

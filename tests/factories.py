@@ -87,6 +87,6 @@ class ItemFactory(factory.Factory):
     price = FuzzyFloat(1.00, 1000.00)
     product_id = FuzzyInteger(1000, 5000)
     status = FuzzyChoice(
-        choices=[ItemStatus.INSTOCK, ItemStatus.LOWSTOCK, ItemStatus.OUTOFSTOCK]
+        choices=[ItemStatus.INSTOCK, ItemStatus.LOWSTOCK, ItemStatus.NOSTOCK]
     )
     order = factory.SubFactory(OrderFactory)
