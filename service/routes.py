@@ -84,12 +84,12 @@ def list_orders():
 
     # This corresponds to "?order_id={some integer}"
     if "order_id" in query_params:
-        order_id = query_params.get("order_id")
+        order_id = int(query_params.get("order_id"))
         query = query.filter(Order.id == order_id)
 
     # Check for 'user_id'
     if "user_id" in query_params:
-        user_id = query_params.get("user_id")
+        user_id = int(query_params.get("user_id"))
         query = query.filter(Order.user_id == user_id)
 
     # Check for 'status'
