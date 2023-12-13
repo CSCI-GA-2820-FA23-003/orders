@@ -104,7 +104,8 @@ Scenario: Update an Order
     Then I should see the message "Success"
     When I set the "User ID" to "25"
     And I press the "Order-Search" button
-    Then I should see "APPROVED" in the results
+    Then I should see the message "Success"
+    And I should see "APPROVED" in the results
     And I should not see "NEW" in the results
     When I close the Modal
     Then I should see the message "Success"
