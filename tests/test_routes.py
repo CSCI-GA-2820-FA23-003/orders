@@ -27,6 +27,7 @@ BASE_URL = "api/orders"
 ######################################################################
 #  T E S T   C A S E S
 ######################################################################
+# pylint: disable=R0904
 class TestOrderService(TestCase):
     """Order Service Tests"""
 

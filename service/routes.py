@@ -147,6 +147,8 @@ def check_content_type(media_type):
 ######################################################################
 @api.route("/orders", strict_slashes=False)
 class OrderCollection(Resource):
+    """order collection"""
+
     @api.doc("create_order")
     @api.expect(create_model)
     @api.response(201, "Order successfully created.")
@@ -355,6 +357,8 @@ class OrderCancelResource(Resource):
 @api.param("order_id", "The Order identifier")
 @api.param("item_id", "The Item identifier")
 class OrderItemResource(Resource):
+    """order item res"""
+
     @api.doc("get order item")
     @api.response(404, "Item not in Order")
     @api.marshal_with(Items_model)
@@ -371,6 +375,7 @@ class OrderItemResource(Resource):
                 return item, status.HTTP_200_OK
 
         api.abort(status.HTTP_404_NOT_FOUND, "Item not in Order")
+        return "", status.HTTP_404_NOT_FOUND
 
     # PUT /orders/{order_id}/items/{item_id} - updates an Order Item record in the database
     @api.doc("update order item")
@@ -414,10 +419,6 @@ class OrderItemResource(Resource):
             status.HTTP_202_ACCEPTED,
             {"Location": location_url},
         )
-
-    """
-    Show a single Order Item and lets you delete them
-    """
 
     # DELETE AN ITEM FROM AN ORDER, deletes an Order Item record in the database
     @api.doc("delete_item_from_order")
