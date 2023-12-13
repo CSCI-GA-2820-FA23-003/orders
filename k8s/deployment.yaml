@@ -23,7 +23,7 @@ spec:
       containers:
       - name: orders
       # TODO: 
-        image: cluster-registry:32000/orders:1.0
+        image: cluster-registry:32000/orders:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
