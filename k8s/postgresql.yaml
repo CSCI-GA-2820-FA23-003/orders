@@ -51,14 +51,14 @@ spec:
       volumes:
       - name: postgres-storage
         persistentVolumeClaim:
-          claimName: postgres-pvc
+          claimName: postgres-orders
         # emptyDir: {}
 
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres-pvc
+  name: postgres-orders
 spec:
   accessModes:
     - ReadWriteOnce
