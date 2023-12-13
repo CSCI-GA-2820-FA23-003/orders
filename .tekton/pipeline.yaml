@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
-  name: orders-cd-pipeline
+  name: cd-pipeline
 spec:
   params:
     - description: The URL to the git repo
@@ -84,7 +84,7 @@ spec:
         - name: SECRET_NAME
           value: postgres-creds
         - name: SECRET_KEY
-          value: database_uri
+          value: uri
       runAfter:
         - git-clone
       taskRef:
