@@ -32,9 +32,9 @@
                 <input type="text" class="form-control" id="order_id" placeholder="Enter ID of Order">
               </div>
               <div class="col-sm-4">
-                <button type="submit" class="btn btn-primary" id="retrieve-btn">Retrieve</button>
-                <button type="submit" class="btn btn-danger" id="delete-btn">Delete</button>
-                <button type="submit" class="btn btn-danger" id="cancel-btn">Cancel</button>
+                <button type="submit" class="btn btn-primary" id="order-retrieve-btn">Retrieve</button>
+                <button type="submit" class="btn btn-danger" id="order-cancel-btn">Cancel</button>
+                <button type="submit" class="btn btn-danger" id="order-delete-btn">Delete</button>
               </div>
             </div>
           </div> <!-- form horizontal -->
@@ -100,10 +100,10 @@
             <!-- SUBMIT BUTTONS -->
             <div class="form-group">
               <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-primary" id="search-btn">Search</button>
-                <button type="submit" class="btn btn-primary" id="clear-btn">Clear</button>
-                <button type="submit" class="btn btn-success" id="create-btn">Create</button>
-                <button type="submit" class="btn btn-warning" id="update-btn">Update</button>
+                <button type="submit" class="btn btn-primary" id="order-search-btn">Search</button>
+                <button type="submit" class="btn btn-primary" id="order-clear-btn">Clear</button>
+                <button type="submit" class="btn btn-success" id="order-create-btn">Create</button>
+                <button type="submit" class="btn btn-warning" id="order-update-btn">Update</button>
               </div>
             </div>
           </div> <!-- form horizontal -->
@@ -122,6 +122,111 @@
             <th class="col-md-3">Cost Amount</th>
             <th class="col-md-3">Status</th>
             <th class="col-md-1">User ID</th>
+          </tr>
+          </thead>
+        </table>
+      </div>
+
+      <!-- FORM ITEMS-->
+      <div class="col-md-12" id="form_data">
+        <h3>Create, Retrieve, Update, and Delete an Item:</h3>
+        <div class="well">
+          <div class="form-horizontal">
+            
+            <!-- ORDER ID -->
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="order_order_id">Order ID:</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control" id="order_order_id" placeholder="Enter order ID for Item">
+              </div>
+            </div>
+
+
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="order_item_id">Item ID:</label>
+              <div class="col-sm-6">
+                <input type="number" class="form-control" id="order_item_id" placeholder="Enter ID of Item">
+              </div>
+              <div class="col-sm-4">
+                <button type="submit" class="btn btn-primary" id="item-retrieve-btn">Retrieve</button>
+                <button type="submit" class="btn btn-danger" id="item-delete-btn">Delete</button>
+              </div>
+            </div>
+          </div> <!-- form horizontal -->
+
+          <div class="form-horizontal">
+
+            <!-- PRODUCT ID -->
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="order_product_id">Product ID:</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control" id="order_product_id" placeholder="Enter product ID for Item">
+              </div>
+            </div>
+
+            <!-- ORDER TITLE -->
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="order_title">Name:</label>
+              <div class="col-sm-10">
+                <input type="string" class="form-control" id="order_title" placeholder="Enter name for Item">
+              </div>
+            </div>
+
+            <!-- PRICE -->
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="order_price">Price:</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control" id="order_price" placeholder="Enter price for Item">
+              </div>
+            </div>
+
+            <!-- QUANTITY -->
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="order_amount">Quantity:</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control" id="order_amount" placeholder="Enter quantity for Item">
+              </div>
+            </div>
+
+          
+            <!-- STATUS -->
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="order_item_status">Status:</label>
+              <div class="col-sm-10">
+                <select class="form-control" id="order_item_status">
+                  <option value="INSTOCK" selected>INSTOCK</option>
+                  <option value="LOWSTOCK" selected>LOWSTOCK</option>
+                  <option value="OUTOFSTOCK" selected>OUTOFSTOCK</option>
+                </select>
+              </div>
+            </div>
+
+
+            <!-- SUBMIT BUTTONS -->
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-primary" id="item-list-btn">List</button>
+                <button type="submit" class="btn btn-primary" id="item-clear-btn">Clear</button>
+                <button type="submit" class="btn btn-success" id="item-create-btn">Create</button>
+                <button type="submit" class="btn btn-warning" id="item-update-btn">Update</button> 
+              </div>
+            </div>
+          </div> <!-- form horizontal -->
+        </div> <!-- end well -->
+      </div> <!-- end Form -->
+
+      <!-- Search Results -->
+      <div class="table-responsive col-md-12" id="list_item_results">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th class="col-md-1">Item ID</th>
+            <th class="col-md-2">Product ID</th>
+            <th class="col-md-3">Name</th>
+            <th class="col-md-2">Price</th>
+            <th class="col-md-2">Quantity</th>
+            <th class="col-md-2">Order ID</th>
+            <th class="col-md-2">Status</th>
           </tr>
           </thead>
         </table>

@@ -21,7 +21,7 @@ DATABASE_URI = os.getenv(
 )
 
 
-BASE_URL = "/orders"
+BASE_URL = "api/orders"
 
 
 ######################################################################
@@ -83,7 +83,7 @@ class TestOrderService(TestCase):
         for _ in range(count):
             item = ItemFactory()
             resp = self.client.post(
-                f"/orders/{order_id}/items",
+                f"/api/orders/{order_id}/items",
                 json=item.serialize(),
                 content_type="application/json",
             )
@@ -118,7 +118,7 @@ class TestOrderService(TestCase):
 
         # TEST INVALID ORDER
         non_exist_order_id = -1
-        resp = self.client.get(f"/orders/?id={non_exist_order_id}")
+        resp = self.client.get(f"/api/orders/{non_exist_order_id}")
         self.assertEqual(
             resp.status_code, status.HTTP_404_NOT_FOUND, "Invalid Order ID"
         )
@@ -184,13 +184,13 @@ class TestOrderService(TestCase):
     def test_read_an_order(self):
         """It should test get one order"""
         orders = self._create_orders(3)
-        resp = self.client.get(f"orders/{orders[0].id}")
+        resp = self.client.get(f"api/orders/{orders[0].id}")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
         self.assertEqual(data["id"], orders[0].id, "Id does not match")
         non_existent_order_id = -1  # An order ID that does not exist
 
-        response = self.client.get(f"/orders/{non_existent_order_id}")
+        response = self.client.get(f"api/orders/{non_existent_order_id}")
 
         self.assertEqual(
             response.status_code,
@@ -266,7 +266,7 @@ class TestOrderService(TestCase):
         db.session.commit()
 
         response = self.client.post(
-            f"orders/{order.id}/items",
+            f"api/orders/{order.id}/items",
             json=item.serialize(),
             content_type="application/json",
         )
@@ -279,8 +279,8 @@ class TestOrderService(TestCase):
 
         data = response.get_json()
         self.assertIsNotNone(data["id"])
-        self.assertEqual(data["order_id"], order.id)
-        self.assertEqual(data["product_id"], item.product_id)
+        self.assertEqual(data["order_id"], int(order.id))
+        self.assertEqual(data["product_id"], int(item.product_id))
         self.assertEqual(data["amount"], 1)
         self.assertEqual(data["price"], item.price)
 
@@ -288,7 +288,7 @@ class TestOrderService(TestCase):
         non_existent_order_id = -1  # An order ID that does not exist
 
         response = self.client.post(
-            f"/orders/{non_existent_order_id}/items",
+            f"/api/orders/{non_existent_order_id}/items",
             content_type="application/json",
         )
 
@@ -305,7 +305,7 @@ class TestOrderService(TestCase):
         self._create_items_in_existing_order(order.id, 3)
 
         resp = self.client.get(
-            f"/orders/{order.id}/items",
+            f"/api/orders/{order.id}/items",
             content_type="application/json",
         )
 
@@ -318,7 +318,7 @@ class TestOrderService(TestCase):
 
         non_exist_order_id = 999
         resp = self.client.get(
-            f"/orders/{non_exist_order_id}/items",
+            f"/api/orders/{non_exist_order_id}/items",
             content_type="application/json",
         )
 
@@ -335,14 +335,14 @@ class TestOrderService(TestCase):
         item = self._create_items_in_existing_order(order.id, 3)[0]
 
         resp = self.client.get(
-            f"/orders/{order.id}/items/{item.id}",
+            f"/api/orders/{order.id}/items/{item.id}",
             content_type="application/json",
         )
 
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
         # print(data)
-        self.assertEqual(data["order_id"], order.id, "Order id does not match")
+        self.assertEqual(data["order_id"], int(order.id), "Order id does not match")
         self.assertEqual(data["id"], item.id, "Item id does not match")
         # Verify that there are items in the response
         # self.assertIn("items", data)
@@ -350,7 +350,7 @@ class TestOrderService(TestCase):
 
         non_exist_item_id = 999
         resp = self.client.get(
-            f"/orders/{order.id}/items/{non_exist_item_id}",
+            f"/api/orders/{order.id}/items/{non_exist_item_id}",
             content_type="application/json",
         )
 
@@ -366,7 +366,7 @@ class TestOrderService(TestCase):
         item = self._create_items_in_existing_order(order.id, 3)[0]
 
         resp = self.client.delete(
-            f"/orders/{order.id}/items/{item.id}",
+            f"/api/orders/{order.id}/items/{item.id}",
             content_type="application/json",
         )
 
@@ -374,7 +374,7 @@ class TestOrderService(TestCase):
 
         non_exist_order_id = 999
         resp = self.client.delete(
-            f"/orders/{non_exist_order_id}/items/{item.id}",
+            f"/api/orders/{non_exist_order_id}/items/{item.id}",
             content_type="application/json",
         )
 
@@ -382,7 +382,7 @@ class TestOrderService(TestCase):
 
         non_exist_item_id = 999
         resp = self.client.delete(
-            f"/orders/{order.id}/items/{non_exist_item_id}",
+            f"/api/orders/{order.id}/items/{non_exist_item_id}",
             content_type="application/json",
         )
 
@@ -510,7 +510,7 @@ class TestOrderService(TestCase):
         item = self._create_items_in_existing_order(order.id, 3)[0]
 
         resp = self.client.get(
-            f"/orders/{order.id}/items/{item.id}",
+            f"/api/orders/{order.id}/items/{item.id}",
             content_type="application/json",
         )
 
@@ -525,14 +525,14 @@ class TestOrderService(TestCase):
         updated_data = {"title": "Updated Title", "amount": 20, "status": "LOWSTOCK"}
 
         response = self.client.put(
-            f"/orders/{-1}/items/{item_id}",
+            f"/api/orders/{-1}/items/{item_id}",
             json=updated_data,
             content_type="application/json",
         )
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
         response = self.client.put(
-            f"/orders/{order_id}/items/{item_id}",
+            f"/api/orders/{order_id}/items/{item_id}",
             json=updated_data,
             content_type="application/json",
         )
@@ -547,7 +547,7 @@ class TestOrderService(TestCase):
         # Test updating a non-existent item
         nonexistent_item_id = 9999  # Adjust as necessary
         response = self.client.put(
-            f"/orders/{order_id}/items/{nonexistent_item_id}",
+            f"/api/orders/{order_id}/items/{nonexistent_item_id}",
             json=updated_data,
             content_type="application/json",
         )

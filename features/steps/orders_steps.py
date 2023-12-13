@@ -36,7 +36,7 @@ def step_impl(context):
     """Delete all Orders and load new ones"""
 
     # List all of the orders and delete them one by one
-    rest_endpoint = f"{context.base_url}/orders"
+    rest_endpoint = f"{context.base_url}/api/orders"
     context.resp = requests.get(rest_endpoint)
     assert context.resp.status_code == HTTP_200_OK
     for order in context.resp.json():
@@ -57,3 +57,8 @@ def step_impl(context):
 
         context.resp = requests.post(rest_endpoint, json=payload)
         assert context.resp.status_code == HTTP_201_CREATED
+
+
+@given("the following items")
+def step_impl(context):
+    assert True
