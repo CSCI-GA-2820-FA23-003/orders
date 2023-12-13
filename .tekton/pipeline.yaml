@@ -84,7 +84,7 @@ spec:
         - name: SECRET_NAME
           value: postgres-creds
         - name: SECRET_KEY
-          value: uri
+          value: database_uri
       runAfter:
         - git-clone
       taskRef:
