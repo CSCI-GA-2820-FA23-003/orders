@@ -172,7 +172,7 @@ class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(
         db.String(63)
-    ) 
+    )
     create_time = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
     address = db.Column(db.String(255), nullable=False)
     cost_amount = db.Column(db.Float, nullable=False)
