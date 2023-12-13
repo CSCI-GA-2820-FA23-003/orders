@@ -18,10 +18,11 @@ POST /orders/{order_id}/items - creates a new Order Item record in the database
 PUT /orders/{order_id}/items/{item_id} - updates an Order Item record in the database
 DELETE /orders/{order_id}/items/{item_id} - deletes an Order Item record in the database
 """
-from flask import jsonify, request, url_for, abort, make_response
+from flask import request, url_for, abort, make_response
+from flask_restx import Resource, fields, reqparse
 from service.common import status  # HTTP Status Codes
 from service.models import Order, Item
-from flask_restx import Resource, fields, reqparse, inputs
+
 
 # Import Flask application
 from . import app

@@ -315,7 +315,7 @@ class TestOrderService(TestCase):
             new_order["status"], order.status.name, "Status does not match"
         )
 
-    def test_create_item_in_order(self):
+    def test_create_item_in_order_(self):
         """It should create an item in an order"""
         # Create a test order and item
         order = self._create_orders(1)[0]
