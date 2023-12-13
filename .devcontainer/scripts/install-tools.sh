@@ -17,7 +17,7 @@ curl -s "https://raw.githubusercontent.com/rancher/k3d/main/install.sh" | sudo b
 echo "Creating kc and kns alias for kubectl..."
 echo "alias kc='/usr/local/bin/kubectl'" >> $HOME/.bash_aliases
 echo "alias kns='kubectl config set-context --current --namespace'" >> $HOME/.bash_aliases
-sudo sh -c 'echo "127.0.0.1 cluster-registry" >> /etc/hosts'
+sudo bash -c 'echo "127.0.0.1 cluster-registry" >> /etc/hosts'
 
 echo "**********************************************************************"
 echo "Install Kustomize CLI..."
@@ -43,12 +43,43 @@ sudo install -c -m 0755 k9s /usr/local/bin
 rm k9s.tar.gz
 
 echo "**********************************************************************"
-echo "Install Tekton CLI..."
+echo "Installing Stern..."
 echo "**********************************************************************"
-curl -LO https://github.com/tektoncd/cli/releases/download/v0.18.0/tkn_0.18.0_Linux_$ARCH.tar.gz
-tar xvzf tkn_0.18.0_Linux_$ARCH.tar.gz -C /usr/local/bin/ tkn
-ln -s /usr/local/bin/tkn /usr/bin/tkn
+curl -L -o stern.tar.gz "https://github.com/stern/stern/releases/download/v1.26.0/stern_1.26.0_linux_$ARCH.tar.gz"
+tar xvzf stern.tar.gz
+sudo install -c -m 0755 stern /usr/local/bin
+rm stern.tar.gz LICENSE
 
 echo "**********************************************************************"
-echo "TOOLS INSTALLATION COMPLETE !!!"
+echo "Installing Knative CLI..."
 echo "**********************************************************************"
+curl -L -o kn "https://github.com/knative/client/releases/download/knative-v1.11.2/kn-darwin-$ARCH"
+sudo install -c -m 0755 kn /usr/local/bin
+rm kn
+
+echo "**********************************************************************"
+echo "Installing Tekton CLI..."
+echo "**********************************************************************"
+if [ $ARCH == amd64 ]; then
+    curl -LO https://github.com/tektoncd/cli/releases/download/v0.32.2/tkn_0.32.2_Linux_x86_64.tar.gz
+	sudo tar xvzf tkn_0.32.2_Linux_x86_64.tar.gz -C /usr/local/bin/ tkn
+else
+    curl -LO https://github.com/tektoncd/cli/releases/download/v0.32.2/tkn_0.32.2_Linux_aarch64.tar.gz
+	sudo tar xvzf tkn_0.32.2_Linux_aarch64.tar.gz -C /usr/local/bin/ tkn
+	rm tkn_0.32.2_Linux_aarch64.tar.gz
+fi;
+
+echo "**********************************************************************"
+echo "Install OpenShift 4 CLI..."
+echo "**********************************************************************"
+# OpenShift CLI has platform specific installs
+if [ $ARCH == amd64 ]; then
+    echo "Installing OpenShift for Intel..."
+    curl https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux.tar.gz --output oc.tar.gz
+else
+    echo "Installing OpenShift for $ARCH ..."
+    curl https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux-$ARCH.tar.gz --output oc.tar.gz
+fi;
+sudo tar xvzf oc.tar.gz -C /usr/local/bin/ oc
+sudo ln -s /usr/local/bin/oc /usr/bin/oc
+rm oc.tar.gz
