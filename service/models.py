@@ -115,6 +115,7 @@ class Item(db.Model):
             self.order_id = data["order_id"]
             self.title = data["title"]
             self.price = data["price"]
+            self.amount = data["amount"]
             self.product_id = data["product_id"]
             self.status = getattr(ItemStatus, data["status"])
         except KeyError as error:
@@ -243,6 +244,7 @@ class Order(db.Model):
 
             for json_item in item_list:
                 item = Item()
+                json_item["order_id"] = ""
                 item.deserialize(json_item)
                 self.items.append(item)
 
