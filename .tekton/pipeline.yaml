@@ -25,7 +25,7 @@ spec:
         - name: refspec
           value: ""
         - name: submodules
-          value: "true"
+          value: "false"
         - name: depth
           value: "1"
         - name: sslVerify
