@@ -156,6 +156,8 @@ class OrderCollection(Resource):
         """
         app.logger.info("Request to create an Order")
 
+        check_content_type("application/json")
+
         # Deserialize the order data
         order_data = api.payload
         order = Order()
@@ -376,7 +378,7 @@ class OrderItemResource(Resource):
     def put(self, order_id, item_id):
         """
         updates an item by item_id in an order
-        This endpoint will add an item (specified by item_id) to the specified order
+        This endpoint will updates an item (specified by item_id) to the specified order
         """
         app.logger.info("Request to update item with ID %d", item_id)
         order = Order.find(order_id)
@@ -429,7 +431,7 @@ class OrderItemResource(Resource):
         order = Order.find(order_id)
         if order:
             item = Item.find(item_id)
-            if (item is not None) and (item.order_id == order_id):
+            if (item is not None) and (str(item.order_id) == order_id):
                 item.delete()
                 app.logger.info(
                     "Item with ID [%s] and order ID [%s] delete complete.",

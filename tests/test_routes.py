@@ -102,6 +102,32 @@ class TestOrderService(TestCase):
     ######################################################################
     #  P L A C E   T E S T   C A S E S   H E R E
     ######################################################################
+    def test_create_item_in_order(self):
+        """It should create an item in an order"""
+        # Create a test order first
+        order = self._create_orders(1)[0]
+
+        # Define item data
+        item_data = {
+            "title": "Test Item",
+            "amount": 5,
+            "price": 10.99,
+            "product_id": 123,
+            "status": "NEW",
+        }
+
+        # Add the item to the order
+        response = self.client.post(
+            f"/api/orders/{order.id}/items",
+            json=item_data,
+            content_type="application/json",
+        )
+
+        # Assert that the item was added successfully
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        data = response.get_json()
+        self.assertEqual(data["order_id"], order.id)
+        self.assertEqual(data["title"], item_data["title"])
 
     def test_index(self):
         """It should call the home page"""
@@ -242,6 +268,38 @@ class TestOrderService(TestCase):
         resp = self.client.get(location, content_type="application/json")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         new_order = resp.get_json()[0]
+        # print(new_order)
+        self.assertEqual(new_order["name"], order.name, "Names does not match")
+        self.assertEqual(
+            datetime.fromisoformat(new_order["create_time"]),
+            order.create_time,
+            "Time does not match",
+        )
+        self.assertEqual(new_order["address"], order.address, "Address does not match")
+        self.assertEqual(
+            new_order["cost_amount"], order.cost_amount, "Cost does not match"
+        )
+        self.assertEqual(
+            new_order["status"], order.status.name, "Status does not match"
+        )
+
+    def test_create_order_with_items(self):
+        """It should Create a new Order with item"""
+        order = OrderFactory()
+        order.items = [ItemFactory()]
+        # logging.debug("Test order: %s", order.serialize())
+        resp = self.client.post(
+            BASE_URL, json=order.serialize(), content_type="application/json"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+        # print(order.serialize())
+
+        # Make sure location header is set
+        location = resp.headers.get("Location", None)
+        self.assertIsNotNone(location)
+
+        # Check the data is correct
+        new_order = resp.get_json()
         # print(new_order)
         self.assertEqual(new_order["name"], order.name, "Names does not match")
         self.assertEqual(
