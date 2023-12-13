@@ -120,6 +120,16 @@ def step_impl(context, button):
     context.driver.find_element(By.ID, button_id).click()
 
 
+@when("I close the modal")
+def step_impl(context):
+    context.driver.find_element(By.CLASS_NAME, "modal-backdrop").click()
+
+
+@then(u'the Modal should open')
+def step_impl(context):
+    raise NotImplementedError(u'STEP: Then the Modal should open')
+
+
 @then('I should see "{name}" in the results')
 def step_impl(context, name):
     found = WebDriverWait(context.driver, context.wait_seconds).until(

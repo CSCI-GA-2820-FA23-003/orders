@@ -23,8 +23,8 @@
 
       <!-- FORM -->
       <div class="col-md-12" id="form_data">
-        <h3>Create, Retrieve, Update, and Delete a Order:</h3>
-        <div class="well">
+        <h3 class="collapsible-heading" onclick="toggleSection('orderSection')">Create, Retrieve, Update, and Delete a Order</h3>
+        <div class="collapsible-content" id="orderSection">  
           <div class="form-horizontal">
             <div class="form-group">
               <label class="control-label col-sm-2" for="order_id">Order ID:</label>
@@ -100,7 +100,7 @@
             <!-- SUBMIT BUTTONS -->
             <div class="form-group">
               <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-primary" id="order-search-btn">Search</button>
+                <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#searchResultsModal" id="order-search-btn">Search</button>
                 <button type="submit" class="btn btn-primary" id="order-clear-btn">Clear</button>
                 <button type="submit" class="btn btn-success" id="order-create-btn">Create</button>
                 <button type="submit" class="btn btn-warning" id="order-update-btn">Update</button>
@@ -110,6 +110,17 @@
         </div> <!-- end well -->
       </div> <!-- end Form -->
 
+
+      <!-- Search Results Modal -->
+      <div class="modal fade" id="searchResultsModal" tabindex="-1" role="dialog" aria-labelledby="searchResultsModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="searchResultsModalLabel">Search Results</h5>
+              <button type="submit" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>  
       <!-- Search Results -->
       <div class="table-responsive col-md-12" id="search_results">
         <table class="table table-striped">
@@ -126,11 +137,18 @@
           </thead>
         </table>
       </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-      <!-- FORM ITEMS-->
+
+      <!-- Modal/FORM ITEMS-->
       <div class="col-md-12" id="form_data">
-        <h3>Create, Retrieve, Update, and Delete an Item:</h3>
-        <div class="well">
+        <h3 class="collapsible-heading" onclick="toggleSection('itemSection')">Create, Retrieve, Update, and Delete an Item</h3>
+          <div class="collapsible-content" id="itemSection">
           <div class="form-horizontal">
             
             <!-- ORDER ID -->
@@ -205,7 +223,7 @@
             <!-- SUBMIT BUTTONS -->
             <div class="form-group">
               <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-primary" id="item-list-btn">List</button>
+                <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#listResultsModal"id="item-list-btn"> List </button>
                 <button type="submit" class="btn btn-primary" id="item-clear-btn">Clear</button>
                 <button type="submit" class="btn btn-success" id="item-create-btn">Create</button>
                 <button type="submit" class="btn btn-warning" id="item-update-btn">Update</button> 
@@ -215,7 +233,16 @@
         </div> <!-- end well -->
       </div> <!-- end Form -->
 
-      <!-- Search Results -->
+      <!-- List/Modal Results -->
+      <div class="modal fade" id="listResultsModal" tabindex="-1" role="dialog" aria-labelledby="listResultsModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="listResultsModalLabel">List Results</h5>
+              <button type="submit" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
       <div class="table-responsive col-md-12" id="list_item_results">
         <table class="table table-striped">
           <thead>
@@ -231,8 +258,15 @@
           </thead>
         </table>
       </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-      <footer>
+      
+      <footer class="footer fixed-bottom">
         <br><br>
         <p>&copy; NYU DevOps Company 2023</p>
       </footer>
@@ -244,6 +278,15 @@
 
   <!-- YOUR REST API -->
   <script type="text/javascript" src="static/js/rest_api.js"></script>
-
+  <script>
+    function toggleSection(sectionId) {
+      var section = document.getElementById(sectionId);
+      if (section.style.display === "block") {
+        section.style.display = "none";
+      } else {
+        section.style.display = "block";
+      }
+    }
+  </script>
   </body>
 </html>

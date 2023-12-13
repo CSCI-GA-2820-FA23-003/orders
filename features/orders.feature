@@ -98,14 +98,16 @@ Scenario: Update an Order
     Then I should see the message "Success"
     And I should see "Ariana Grande" in the "Name" field
     And I should see "NEW" in the "Status" dropdown
+    When I close the Modal
     WHEN I select "APPROVED" in the "Status" dropdown
     And I press the "Order-Update" button
     Then I should see the message "Success"
     When I set the "User ID" to "25"
     And I press the "Order-Search" button
-    Then I should see the message "Success"
-    AND I should see "APPROVED" in the results
+    Then I should see "APPROVED" in the results
     And I should not see "NEW" in the results
+    When I close the Modal
+    Then I should see the message "Success"
 
 
 Scenario: Retrieve an Order
@@ -114,6 +116,7 @@ Scenario: Retrieve an Order
     And I press the "Order-Clear" button
     And I press the "Order-Search" button
     Then I should see the message "Success"
+    When I close the Modal
     When I copy the "Id" field
     And I press the "Order-Clear" button
     Then the "Id" field should be empty
@@ -130,6 +133,7 @@ Scenario: Delete an Order
     And I set the "Name" to "Ariana Grande"
     And I press the "Order-Search" button
     Then I should see the message "Success"
+    When I close the Modal
     When I copy the "Id" field
     And I press the "Order-Clear" button
     Then the "Id" field should be empty
@@ -149,6 +153,7 @@ Scenario: Cancel an Order
     And I set the "Name" to "Ariana Grande"
     And I press the "Order-Search" button
     Then I should see the message "Success"
+    When I close the Modal
     When I copy the "Id" field
     And I press the "Order-Clear" button
     Then the "Id" field should be empty
@@ -167,6 +172,7 @@ Scenario: Create an Item in an Order
     And I press the "Order-Clear" button
     And I press the "Order-Search" button
     Then I should see the message "Success"
+    When I close the Modal
     When I copy the "ID" field
     And I press the "Order-Clear" button
     Then the "ID" field should be empty
@@ -197,11 +203,13 @@ Scenario: List Items in an Order
     And I press the "Order-Clear" button
     And I press the "Order-Search" button
     Then I should see the message "Success"
+    When I close the Modal
     When I copy the "ID" field
     And I press the "Order-Clear" button
     Then the "ID" field should be empty
     When I paste the "Order ID" field
     And I press the "Item-List" button
+    When I close the Modal
     Then I should see the message "Success"
     
 
@@ -211,6 +219,7 @@ Scenario: Delete Items in an Order
     And I press the "Order-Search" button
     Then I should see the message "Success"
     When I copy the "ID" field
+    When I close the Modal
     And I press the "Order-Clear" button
     Then the "ID" field should be empty
     When I paste the "Order ID" field
@@ -233,6 +242,7 @@ Scenario: Update Items in an Order
     And I press the "Order-Clear" button
     And I press the "Order-Search" button
     Then I should see the message "Success"
+    When I close the Modal
     When I copy the "ID" field
     And I press the "Order-Clear" button
     Then the "ID" field should be empty
