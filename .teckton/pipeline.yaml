@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
-  name: cd-pipeline
+  name: orders-cd-pipeline
 spec:
   params:
     - description: The URL to the git repo

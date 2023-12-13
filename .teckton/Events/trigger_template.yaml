@@ -15,11 +15,11 @@ spec:
   - apiVersion: tekton.dev/v1beta1
     kind: PipelineRun
     metadata:
-      generateName: cd-pipeline-$(tt.params.git-repo-name)-
+      generateName: orders-cd-pipeline-$(tt.params.git-repo-name)-
     spec:
       serviceAccountName: pipeline
       pipelineRef:
-        name: cd-pipeline
+        name: orders-cd-pipeline
       params:
       - name: APP_NAME
         value: $(tt.params.git-repo-name)
