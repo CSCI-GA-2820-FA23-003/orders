@@ -1,5 +1,5 @@
 # Image for a NYU Lab development environment
-FROM rofrano/nyu-devops-base:fa23
+#FROM rofrano/nyu-devops-base:fa23
 FROM rofrano/pipeline-selenium:latest
 
 # Add any tools that are needed beyond Python 3.11
