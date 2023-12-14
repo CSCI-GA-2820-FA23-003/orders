@@ -110,6 +110,7 @@ class TestOrderService(TestCase):
 
         # Define item data
         item_data = {
+            "order_id": order.id, 
             "title": "Test Item",
             "amount": 5,
             "price": 10.99,
