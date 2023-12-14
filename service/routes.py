@@ -496,9 +496,9 @@ class ItemListResource(Resource):
         item.create()
 
         # order.items.append(item)
-        # order.update()
-        item.order_id = order_id
-        item.update()
+        order.update()
+        # item.order_id = order_id
+        # item.update()
 
         message = item.serialize()
         location_url = url_for(
