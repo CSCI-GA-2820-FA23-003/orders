@@ -108,15 +108,10 @@ class TestOrderService(TestCase):
         # Create a test order first
         order = self._create_orders(1)[0]
 
+        item = ItemFactory()
+
         # Define item data
-        item_data = {
-            "order_id": order.id,
-            "title": "Test Item",
-            "amount": 5,
-            "price": 10.99,
-            "product_id": 123,
-            "status": ItemStatus.INSTOCK,
-        }
+        item_data = item.serialize()
 
         # Add the item to the order
         response = self.client.post(
