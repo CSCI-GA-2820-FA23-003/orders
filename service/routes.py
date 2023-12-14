@@ -174,8 +174,8 @@ def create_item_in_an_order(order_id):
 
     # order.items.append(item)
     # order.update()
-    # item.order_id = order_id
-    # item.update()
+    item.order_id = order_id
+    item.update()
 
     message = item.serialize()
     location_url = url_for(
