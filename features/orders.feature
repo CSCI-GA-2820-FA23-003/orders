@@ -14,7 +14,7 @@ Background:
         | Product ID | Name              | Price  | Amount   | Status        |
         | 233        | Ipad              | 699    | 2        | INSTOCK       |
         | 101        | Iphone 15         | 799    | 8        | LOWSTOCK      |     
-        | 151        | Iphone 15 Plus    | 999    | 1        | NOSTOCK       |
+        | 151        | Iphone 15 Plus    | 999    | 1        | OUTOFSTOCK       |
 
 Scenario: The server is running
     When I visit the "Home Page"
@@ -255,7 +255,7 @@ Scenario: Update Items in an Order
     And I select "INSTOCK" in the "Item Status" dropdown
     And I press the "Item-Create" button
     Then I should see the message "Success"
-    When I select "NOSTOCK" in the "Item Status" dropdown
+    When I select "OUTOFSTOCK" in the "Item Status" dropdown
     And I press the "Item-Update" button
     And I press the "Item-List" button
     Then I should not see "INSTOCK" in the item list
