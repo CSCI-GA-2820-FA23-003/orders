@@ -374,8 +374,7 @@ class OrderItemResource(Resource):
                 print("found")
                 return item, status.HTTP_200_OK
 
-        api.abort(status.HTTP_404_NOT_FOUND, "Item not in Order")
-        return "", status.HTTP_404_NOT_FOUND
+        abort(status.HTTP_404_NOT_FOUND, "Item not in Order")
 
     # PUT /orders/{order_id}/items/{item_id} - updates an Order Item record in the database
     @api.doc("update order item")
