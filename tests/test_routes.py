@@ -123,7 +123,7 @@ class TestOrderService(TestCase):
         # Assert that the item was added successfully
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         data = response.get_json()
-        self.assertEqual(data["order_id"], order.id)
+        self.assertEqual(int(data["order_id"]), int(order.id))
         self.assertEqual(data["title"], item_data["title"])
 
     def test_index(self):
