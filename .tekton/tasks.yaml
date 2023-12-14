@@ -145,3 +145,45 @@ spec:
           echo Applying manifests in $(inputs.params.manifest_dir) directory
           oc apply -f $(inputs.params.manifest_dir)
           echo -----------------------------------
+
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: bdd-test
+spec:
+  description: This task will run behave.
+  params:
+    - default: >-
+        https://orders-orders-devops-dev.apps.sandbox-m3.1530.p1.openshiftapps.com/
+      name: BASE_URL
+      type: string
+  steps:
+    - args:
+        - |-
+          #!/bin/bash
+          set -e
+          echo "***** Installing dependencies *****"
+          python -m pip install --upgrade pip wheel
+          pip install -qr requirements.txt
+          echo "\n*** STARTING APPLICATION ***\n"
+          sleep 30
+          curl -L -I $(params.BASE_URL)
+          echo $(params.BASE_URL)
+          echo "***** Running BDD *****"
+
+          behave
+      command:
+        - /bin/bash
+        - '-c'
+      computeResources: {}
+      env:
+        - name: BASE_URL
+          value: $(params.BASE_URL)
+        - name: DATABASE_URI
+          value: 'postgresql+psycopg://postgres:pgs3cr3t@postgres:5432/postgres'
+      image: docker.io/rofrano/pipeline-selenium
+      name: run
+      workingDir: /workspace/source
+  workspaces:
+    - name: source
