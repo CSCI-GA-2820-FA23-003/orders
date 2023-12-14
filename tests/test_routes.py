@@ -108,14 +108,10 @@ class TestOrderService(TestCase):
         # Create a test order first
         order = self._create_orders(1)[0]
 
+        item = ItemFactory()
+
         # Define item data
-        item_data = {
-            "title": "Test Item",
-            "amount": 5,
-            "price": 10.99,
-            "product_id": 123,
-            "status": "NEW",
-        }
+        item_data = item.serialize()
 
         # Add the item to the order
         response = self.client.post(
@@ -127,7 +123,7 @@ class TestOrderService(TestCase):
         # Assert that the item was added successfully
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         data = response.get_json()
-        self.assertEqual(data["order_id"], order.id)
+        self.assertEqual(int(data["order_id"]), int(order.id))
         self.assertEqual(data["title"], item_data["title"])
 
     def test_index(self):

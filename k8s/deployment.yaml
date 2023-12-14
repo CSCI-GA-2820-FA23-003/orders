@@ -23,7 +23,7 @@ spec:
       containers:
       - name: orders
       # TODO: 
-        image: cluster-registry:32000/orders:1.0
+        image: cluster-registry:32000/orders:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
@@ -36,8 +36,8 @@ spec:
                 key: uri
         resources:
           limits:
+            cpu: "0.50"
+            memory: "128Mi"
+          requests:
             cpu: "0.25"
             memory: "64Mi"
-          requests:
-            cpu: "0.10"
-            memory: "32Mi"
