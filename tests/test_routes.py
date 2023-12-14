@@ -115,7 +115,7 @@ class TestOrderService(TestCase):
             "amount": 5,
             "price": 10.99,
             "product_id": 123,
-            "status": "NEW",
+            "status": ItemStatus.INSTOCK,
         }
 
         # Add the item to the order
