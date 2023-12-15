@@ -5,9 +5,6 @@
 [![Build Status](https://github.com/CSCI-GA-2820-FA23-003/orders/actions/workflows/ci.yml/badge.svg)](https://github.com/CSCI-GA-2820-FA23-003/orders/actions)
 [![codecov](https://codecov.io/gh/CSCI-GA-2820-FA23-003/orders/graph/badge.svg?token=TZEL64LXMF)](https://codecov.io/gh/CSCI-GA-2820-FA23-003/orders)
 
-## Overview
-
-This project template contains starter code for your class project. The `/service` folder contains your `models.py` file for your model and a `routes.py` file for your service. The `/tests` folder has test case starter code for testing the model and the service separately. All you need to do is add your functionality. You can use the [lab-flask-tdd](https://github.com/nyu-devops/lab-flask-tdd) for code examples to copy from.
 
 ## Automatic Setup
 
